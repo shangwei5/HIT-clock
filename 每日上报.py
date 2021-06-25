@@ -16,11 +16,21 @@ option.add_argument('user-agent='+ua)
 driver = webdriver.Chrome(executable_path= '/usr/bin/chromedriver', options = option)
 
 print('正在上报')
+# IDS login
 driver.get('https://ids.hit.edu.cn/authserver/')
 driver.find_element_by_id('mobileUsername').send_keys(USERNAME)
 driver.find_element_by_id('mobilePassword').send_keys(PASSWORD)
 driver.find_element_by_id('load').click()
-driver.get('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
+
+# VPN login
+driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
+driver.find_element_by_id('mobileUsername').send_keys(USERNAME)
+driver.find_element_by_id('mobilePassword').send_keys(PASSWORD)
+driver.find_element_by_id('load').click()
+
+# http://xg-hit-edu-cn-s.ivpn.hit.edu.cn
+driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
+
 driver.find_element_by_class_name('right_btn').click()
 sleep(1)
 alert = EC.alert_is_present()(driver)
@@ -36,7 +46,7 @@ driver.execute_script('document.getElementsByClassName("weui-dialog__btn primary
 print('正在申请两天后出校')
 # 直接访问会报错，因此通过每日上报间接访问
 # driver.get('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsCxsq')
-driver.get('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
+driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
 driver.find_element_by_class_name('footer_img1').click()
 sleep(1)
 driver.execute_script('wjdc()')
