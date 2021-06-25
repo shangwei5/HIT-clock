@@ -16,12 +16,6 @@ option.add_argument('user-agent='+ua)
 driver = webdriver.Chrome(executable_path= '/usr/bin/chromedriver', options = option)
 
 print('正在上报')
-# IDS login
-driver.get('https://ids.hit.edu.cn/authserver/')
-driver.find_element_by_id('mobileUsername').send_keys(USERNAME)
-driver.find_element_by_id('mobilePassword').send_keys(PASSWORD)
-driver.find_element_by_id('load').click()
-
 # VPN login
 driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
 print(driver.current_url)
@@ -30,9 +24,16 @@ driver.find_element_by_id('mobilePassword').send_keys(PASSWORD)
 driver.find_element_by_id('load').click()
 
 # http://xg-hit-edu-cn-s.ivpn.hit.edu.cn
+# IDS login
 driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
 print(driver.current_url)
+driver.find_element_by_id('mobileUsername').send_keys(USERNAME)
+driver.find_element_by_id('mobilePassword').send_keys(PASSWORD)
+driver.find_element_by_id('load').click()
 
+# XGsys
+driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
+print(driver.current_url)
 driver.find_element_by_class_name('right_btn').click()
 sleep(1)
 alert = EC.alert_is_present()(driver)
