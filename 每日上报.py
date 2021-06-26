@@ -38,7 +38,7 @@ try:
 	driver.find_element_by_class_name('right_btn').click()
 	while driver.current_url == 'http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx':
 		sleep(1)
-except UnexpectedAlertPresentException:
+except:
 	reports = driver.find_element_by_id('center')
 	divs = reports.find_elements_by_tag_name('div')
 	for div in divs:
