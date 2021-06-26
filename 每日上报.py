@@ -54,7 +54,7 @@ try:
 except UnexpectedAlertPresentException:
     alert = EC.alert_is_present()(driver)
     print('alert')
-    alert.accept()
+    alert.dismiss()
 
 print(driver.current_url)
 
