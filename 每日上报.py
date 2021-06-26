@@ -10,7 +10,6 @@ print('初始化浏览器')
 USERNAME   = os.environ['ID']
 PASSWORD   = os.environ['PASSWORD']
 LOCATION   = os.environ['LOCATION']
-driver = None
 ua = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_1 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) Mobile/14A403 MicroMessenger/6.3.27 NetType/WIFI Language/zh_CN'
 option = webdriver.ChromeOptions()
 option.headless = True
@@ -18,45 +17,22 @@ option.add_argument('user-agent='+ua)
 driver = webdriver.Chrome(executable_path= '/usr/bin/chromedriver', options = option)
 
 print('正在上报')
-# VPN login
-driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
-print(driver.current_url)
+driver.get('http://ivpn.hit.edu.cn')
 driver.find_element_by_id('mobileUsername').send_keys(USERNAME)
 driver.find_element_by_id('mobilePassword').send_keys(PASSWORD)
 driver.find_element_by_id('load').click()
+driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn:1080/zhxy-xgzs/xg_mobile/xs/yqxx')
+driver.find_element_by_class_name('right_btn').click()
+sleep(1)
+alert = EC.alert_is_present()(driver)
 
-# http://xg-hit-edu-cn-s.ivpn.hit.edu.cn
-# IDS login
-driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
-print(driver.current_url)
-driver.find_element_by_id('mobileUsername').send_keys(USERNAME)
-driver.find_element_by_id('mobilePassword').send_keys(PASSWORD)
-driver.find_element_by_id('load').click()
+if alert: # 重复上报
+	alert.accept()
+	driver.find_element_by_id('center').find_elements_by_tag_name('div')[5].click()
 
-# XGsys
-driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
-print(driver.current_url)
-
-WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_id('center'))
-reports = driver.find_element_by_id('center')
-WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_id('center').find_element_by_class_name('content_title'))
-last_report_date = reports.find_element_by_class_name('content_title').text[-10:].split('-')
-yy, mm, dd = (int(i) for i in last_report_date)
-time.timezone = -28800  # 北京时间
-date = time.localtime(time.time())
-if yy == date.tm_year and mm == date.tm_mon and dd == date.tm_mday:
-    reports.find_elements_by_tag_name('div')[5].click()
-else:
-    driver.find_element_by_class_name('right_btn').click()
-try:
-    while driver.current_url == 'http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx':
-        sleep(1)
-except UnexpectedAlertPresentException:
-    alert = EC.alert_is_present()(driver)
-    print('alert')
-    alert.dismiss()
-
-print(driver.current_url)
+alert = EC.alert_is_present()(driver)
+if alert: # 获取位置
+	alert.dismiss()
 
 WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_id('gnxxdz'))
 loc = driver.find_element_by_id('gnxxdz')
@@ -77,10 +53,6 @@ sleep(1)
 print(driver.current_url)
 driver.find_element_by_class_name('right_btn').click() #
 sleep(1)
-alert = EC.alert_is_present()(driver)
-if alert:
-    alert.accept()
-    driver.find_element_by_id('center').find_elements_by_tag_name('div')[5].click()
 WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_id('cxlx01'))
 lx_type = driver.find_element_by_id('cxlx01')
 driver.execute_script("arguments[0].checked = true;", lx_type)
