@@ -34,8 +34,20 @@ driver.find_element_by_id('load').click()
 # XGsys
 driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
 print(driver.current_url)
-driver.find_element_by_class_name('right_btn').click()
-sleep(1)
+try:
+	driver.find_element_by_class_name('right_btn').click()
+	while driver.current_url == 'http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx':
+		sleep(1)
+except UnexpectedAlertPresentException:
+	reports = driver.find_element_by_id('center')
+	divs = reports.find_elements_by_tag_name('div')
+	for div in divs:
+		if div.text == '修改':
+			div.click()
+			while driver.current_url == 'http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx':
+				sleep(1)
+			break
+	
 print(driver.current_url)
 alert = EC.alert_is_present()(driver)
 if alert:
