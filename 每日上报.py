@@ -37,7 +37,7 @@ driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
 print(driver.current_url)
 WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_id('center'))
 reports = driver.find_element_by_id('center')
-WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_class_name('content_title'))
+WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_id('center').find_element_by_class_name('content_title'))
 last_report_date = reports.find_element_by_class_name('content_title').text[-10:].split('-')
 yy, mm, dd = (int(i) for i in last_report_date)
 time.timezone = -28800  # 北京时间
