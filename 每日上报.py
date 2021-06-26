@@ -2,6 +2,7 @@ import os
 import time
 from time import sleep
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 print('初始化浏览器')
@@ -34,7 +35,9 @@ driver.find_element_by_id('load').click()
 # XGsys
 driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
 print(driver.current_url)
+WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_id('center'))
 reports = driver.find_element_by_id('center')
+WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_class_name('content_title'))
 last_report_date = reports.find_element_by_class_name('content_title').text[-10:].split('-')
 yy, mm, dd = (int(i) for i in last_report_date)
 time.timezone = -28800  # 北京时间
@@ -58,6 +61,7 @@ if alert:
     print('alert')
     alert.accept()
     driver.find_element_by_id('center').find_elements_by_tag_name('div')[5].click()
+WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_id('gnxxdz'))
 loc = driver.find_element_by_id('gnxxdz')
 driver.execute_script('arguments[0].value="'+LOCATION+'"', loc)
 driver.find_element_by_id('checkbox').click()
@@ -68,6 +72,7 @@ print('正在申请两天后出校')
 # 直接访问会报错，因此通过每日上报间接访问
 # driver.get('https://xg.hit.edu.cn/zhxy-xgzs/xg_mobile/xsCxsq')
 driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
+WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_class_name('footer_img1'))
 driver.find_element_by_class_name('footer_img1').click()
 sleep(1)
 driver.execute_script('wjdc()')
@@ -79,7 +84,7 @@ alert = EC.alert_is_present()(driver)
 if alert:
     alert.accept()
     driver.find_element_by_id('center').find_elements_by_tag_name('div')[5].click()
-
+WebDriverWait(driver,30,0.5).until(lambda driver: driver.find_element_by_id('cxlx01'))
 lx_type = driver.find_element_by_id('cxlx01')
 driver.execute_script("arguments[0].checked = true;", lx_type)
 
