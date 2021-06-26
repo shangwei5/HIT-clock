@@ -34,26 +34,30 @@ driver.find_element_by_id('load').click()
 # XGsys
 driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx')
 print(driver.current_url)
-try:
-	driver.find_element_by_class_name('right_btn').click()
-	while driver.current_url == 'http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx':
-		sleep(1)
-except:
-	reports = driver.find_element_by_id('center')
-	divs = reports.find_elements_by_tag_name('div')
-	for div in divs:
-		if div.text == '修改':
-			div.click()
-			while driver.current_url == 'http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx':
-				sleep(1)
-			break
-	
+reports = driver.find_element_by_id('center')
+last_report_date = reports.find_element_by_class_name('content_title').text[-10:].split('-')
+yy, mm, dd = (int(i) for i in last_report_date)
+time.timezone = -28800  # 北京时间
+date = time.localtime(time.time())
+if yy == date.tm_year and mm == date.tm_mon and dd == date.tm_mday:
+    divs = reports.find_elements_by_tag_name('div')
+    for div in divs:
+        if div.text == '修改':
+            div.click()
+            while driver.current_url == 'http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx':
+                sleep(1)
+            break
+else:
+    driver.find_element_by_class_name('right_btn').click()
+    while driver.current_url == 'http://xg-hit-edu-cn-s.ivpn.hit.edu.cn/zhxy-xgzs/xg_mobile/xs/yqxx':
+        sleep(1)
+    
 print(driver.current_url)
 alert = EC.alert_is_present()(driver)
 if alert:
-	print('alert')
-	alert.accept()
-	driver.find_element_by_id('center').find_elements_by_tag_name('div')[5].click()
+    print('alert')
+    alert.accept()
+    driver.find_element_by_id('center').find_elements_by_tag_name('div')[5].click()
 loc = driver.find_element_by_id('gnxxdz')
 driver.execute_script('arguments[0].value="'+LOCATION+'"', loc)
 driver.find_element_by_id('checkbox').click()
@@ -73,8 +77,8 @@ driver.find_element_by_class_name('right_btn').click() #
 sleep(1)
 alert = EC.alert_is_present()(driver)
 if alert:
-	alert.accept()
-	driver.find_element_by_id('center').find_elements_by_tag_name('div')[5].click()
+    alert.accept()
+    driver.find_element_by_id('center').find_elements_by_tag_name('div')[5].click()
 
 lx_type = driver.find_element_by_id('cxlx01')
 driver.execute_script("arguments[0].checked = true;", lx_type)
@@ -88,7 +92,7 @@ lx_reason = driver.find_element_by_id('cxly')
 driver.execute_script('arguments[0].value="吃饭"', lx_reason)
 
 for i in range(1, 10):
-	driver.find_element_by_id('checkbox%d'%i).click()
+    driver.find_element_by_id('checkbox%d'%i).click()
 driver.execute_script('save()')
 driver.execute_script('document.getElementsByClassName("weui-dialog__btn primary")[0].click()')
 
