@@ -14,7 +14,7 @@ ua = 'Mozilla/5.0 (Linux; U; Android 7.0; zh-CN; Nexus 5X Build/NRD90M) AppleWeb
 option = webdriver.ChromeOptions()
 option.headless = True
 option.add_argument('user-agent='+ua)
-options.add_argument('window-size=1080x2340')
+option.add_argument('window-size=1080x2340')
 driver = webdriver.Chrome(executable_path= '/usr/bin/chromedriver', options = option)
 
 print('正在上报')
