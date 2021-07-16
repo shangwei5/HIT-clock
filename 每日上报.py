@@ -23,10 +23,11 @@ driver.find_element_by_id('mobilePassword').send_keys(PASSWORD)
 driver.find_element_by_id('load').click()
 driver.get('http://xg-hit-edu-cn-s.ivpn.hit.edu.cn:1080/zhxy-xgzs/xg_mobile/xs/yqxx')
 driver.find_element_by_class_name('right_btn').click()
-sleep(1)
+sleep(3)
 alert = EC.alert_is_present()(driver)
 
 if alert: # 重复上报
+	sleep(2)
 	alert.accept()
 	driver.find_element_by_id('center').find_elements_by_tag_name('div')[5].click()
 
