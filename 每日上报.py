@@ -10,10 +10,11 @@ print('初始化浏览器')
 USERNAME   = os.environ['ID']
 PASSWORD   = os.environ['PASSWORD']
 LOCATION   = os.environ['LOCATION']
-ua = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_0_1 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) Mobile/14A403 MicroMessenger/6.3.27 NetType/WIFI Language/zh_CN'
+ua = 'Mozilla/5.0 (Linux; U; Android 7.0; zh-CN; Nexus 5X Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/40.0.2214.89 UCBrowser/11.4.5.937 Mobile Safari/537.36'
 option = webdriver.ChromeOptions()
 option.headless = True
 option.add_argument('user-agent='+ua)
+options.add_argument('window-size=1080x2340')
 driver = webdriver.Chrome(executable_path= '/usr/bin/chromedriver', options = option)
 
 print('正在上报')
